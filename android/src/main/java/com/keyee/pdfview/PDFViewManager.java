@@ -30,6 +30,7 @@ import com.facebook.react.common.MapBuilder;
 
 import static java.lang.String.format;
 import java.lang.ClassCastException;
+import java.lang.Exception;
 
 public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPageChangeListener,OnLoadCompleteListener {
     private static final String REACT_CLASS = "RCTPDFViewAndroid";
@@ -87,28 +88,32 @@ public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPage
     }
 
     private void display(boolean jumpToFirstPage) {
-        if (jumpToFirstPage)
-            pageNumber = 1;
-        showLog(format("display %s %s", filePath, pageNumber));
-        if (assetName != null) {
-            pdfView.fromAsset(assetName)
-                .defaultPage(pageNumber)
-                //.swipeVertical(true)
-                .onPageChange(this)
-                .onLoad(this)
-                .load();
-        } else if (filePath != null){
-            //fromFile,fromAsset
-            //pdfView.fromAsset(fileName)
-            File pdfFile = new File(filePath);
-            pdfView.fromFile(pdfFile)
-                .defaultPage(pageNumber)
-                //.showMinimap(false)
-                //.enableSwipe(true)
-                //.swipeVertical(true)
-                .onPageChange(this)
-                .onLoad(this)
-                .load();
+        try {
+            if (jumpToFirstPage)
+                pageNumber = 1;
+            showLog(format("display %s %s", filePath, pageNumber));
+            if (assetName != null) {
+                pdfView.fromAsset(assetName)
+                        .defaultPage(pageNumber)
+                        //.swipeVertical(true)
+                        .onPageChange(this)
+                        .onLoad(this)
+                        .load();
+            } else if (filePath != null){
+                //fromFile,fromAsset
+                //pdfView.fromAsset(fileName)
+                File pdfFile = new File(filePath);
+                pdfView.fromFile(pdfFile)
+                        .defaultPage(pageNumber)
+                        //.showMinimap(false)
+                        //.enableSwipe(true)
+                        //.swipeVertical(true)
+                        .onPageChange(this)
+                        .onLoad(this)
+                        .load();
+            }
+        } catch (Exception e) {
+            Log.w("pdf", e.toString());
         }
     }
 
