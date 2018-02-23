@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTBridge.h"
+
 #import "RNPDFViewManager.h"
 #import "RNPDFView.h"
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+#else
+#import "RCTBridge.h"
 #import "RCTEventDispatcher.h"
+#endif
 
 @implementation RNPDFViewManager
 
